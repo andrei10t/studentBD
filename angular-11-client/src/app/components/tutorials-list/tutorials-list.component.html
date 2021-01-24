@@ -4,7 +4,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Search by title"
+        placeholder="Cauta dupa nume"
         [(ngModel)]="title"
       />
       <div class="input-group-append">
@@ -13,13 +13,13 @@
           type="button"
           (click)="searchTitle()"
         >
-          Search
+          Cauta
         </button>
       </div>
     </div>
   </div>
   <div class="col-md-6">
-    <h4>Tutorials List</h4>
+    <h4>Lista cereri</h4>
     <ul class="list-group">
       <li
         class="list-group-item"
@@ -37,17 +37,17 @@
   </div>
   <div class="col-md-6">
     <div *ngIf="currentTutorial">
-      <h4>Tutorial</h4>
+      <h4>Cerere</h4>
       <div>
-        <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+        <label><strong>Titlu:</strong></label> {{ currentTutorial.title }}
       </div>
       <div>
-        <label><strong>Description:</strong></label>
+        <label><strong>Descriere:</strong></label>
         {{ currentTutorial.description }}
       </div>
       <div>
         <label><strong>Status:</strong></label>
-        {{ currentTutorial.published ? "Published" : "Pending" }}
+        {{ currentTutorial.published ? "Acceptat" : "Trimis" }}
       </div>
 
       <a class="badge badge-warning" routerLink="/tutorials/{{ currentTutorial.id }}">
@@ -57,7 +57,7 @@
 
     <div *ngIf="!currentTutorial">
       <br />
-      <p>Please click on a Tutorial...</p>
+      <p>Apasati pe o cerere pentru mai multe detalii</p>
     </div>
   </div>
 </div>
