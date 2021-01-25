@@ -5,13 +5,13 @@
         type="text"
         class="form-control"
         placeholder="Cauta dupa nume"
-        [(ngModel)]="title"
+        [(ngModel)]="studentName"
       />
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary"
           type="button"
-          (click)="searchTitle()"
+          (click)="searchName()"
         >
           Cauta
         </button>
@@ -27,7 +27,7 @@
         [class.active]="i == currentIndex"
         (click)="setActiveTutorial(tutorial, i)"
       >
-        {{ tutorial.title }}
+        {{ tutorial.studentName }}
       </li>
     </ul>
 
@@ -39,7 +39,7 @@
     <div *ngIf="currentTutorial">
       <h4>Cerere</h4>
       <div>
-        <label><strong>Titlu:</strong></label> {{ currentTutorial.title }}
+        <label><strong>Titlu:</strong></label> {{ currentTutorial.studentName }}
       </div>
       <div>
         <label><strong>Descriere:</strong></label>

@@ -18,26 +18,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bezkoder.spring.data.mongodb.model.Tutorial;
-import com.bezkoder.spring.data.mongodb.repository.TutorialRepository;
+import com.bezkoder.spring.data.mongodb.model.StudentRequest;
+import com.bezkoder.spring.data.mongodb.repository.StudentRequestRepository;
 
 @CrossOrigin(origins = "http://localhost:4201")//merge si 4200
 @RestController
 @RequestMapping("/api")
-public class TutorialController {
+public class StudentRequestController {
 
   @Autowired
-  TutorialRepository repository;
+  StudentRequestRepository repository;
 
   @GetMapping("/tutorials")
-  public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
+  public ResponseEntity<List<StudentRequest>> getAllTutorials(@RequestParam(required = false) String studentName) {
     try {
-      List<Tutorial> tutorials = new ArrayList<Tutorial>();
+      List<StudentRequest> tutorials = new ArrayList<StudentRequest>();
 
-      if (title == null)
+      if (studentName == null)
         repository.findAll().forEach(tutorials::add);
       else
-        repository.findByTitleContaining(title).forEach(tutorials::add);
+        repository.findByStudentNameContaining(studentName).forEach(tutorials::add);
 
       if (tutorials.isEmpty()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -50,8 +50,8 @@ public class TutorialController {
   }
 
   @GetMapping("/tutorials/{id}")
-  public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") String id) {
-    Optional<Tutorial> tutorialData = repository.findById(id);
+  public ResponseEntity<StudentRequest> getTutorialById(@PathVariable("id") String id) {
+    Optional<StudentRequest> tutorialData = repository.findById(id);
 
     if (tutorialData.isPresent()) {
       return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
@@ -61,9 +61,9 @@ public class TutorialController {
   }
 
   @PostMapping("/tutorials")
-  public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
+  public ResponseEntity<StudentRequest> createTutorial(@RequestBody StudentRequest tutorial) {
     try {
-      Tutorial _tutorial = repository.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false));
+      StudentRequest _tutorial = repository.save(new StudentRequest(tutorial.getStudentName(), tutorial.getDescription(), false));
       return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
     } catch (Exception e) {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,12 +71,12 @@ public class TutorialController {
   }
 
   @PutMapping("/tutorials/{id}")
-  public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") String id, @RequestBody Tutorial tutorial) {
-    Optional<Tutorial> tutorialData = repository.findById(id);
+  public ResponseEntity<StudentRequest> updateTutorial(@PathVariable("id") String id, @RequestBody StudentRequest tutorial) {
+    Optional<StudentRequest> tutorialData = repository.findById(id);
 
     if (tutorialData.isPresent()) {
-      Tutorial _tutorial = tutorialData.get();
-      _tutorial.setTitle(tutorial.getTitle());
+      StudentRequest _tutorial = tutorialData.get();
+      _tutorial.setStudentName(tutorial.getStudentName());
       _tutorial.setDescription(tutorial.getDescription());
       _tutorial.setPublished(tutorial.isPublished());
       return new ResponseEntity<>(repository.save(_tutorial), HttpStatus.OK);
@@ -106,9 +106,9 @@ public class TutorialController {
   }
 
   @GetMapping("/tutorials/published")
-  public ResponseEntity<List<Tutorial>> findByPublished() {
+  public ResponseEntity<List<StudentRequest>> findByPublished() {
     try {
-      List<Tutorial> tutorials = repository.findByPublished(true);
+      List<StudentRequest> tutorials = repository.findByPublished(true);
 
       if (tutorials.isEmpty()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

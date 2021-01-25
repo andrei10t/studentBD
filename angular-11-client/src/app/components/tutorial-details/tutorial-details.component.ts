@@ -10,7 +10,7 @@ import { Tutorial } from 'src/app/models/tutorial.model';
 })
 export class TutorialDetailsComponent implements OnInit {
   currentTutorial: Tutorial = {
-    title: '',
+    studentName: '',
     description: '',
     published: false
   };
@@ -40,7 +40,7 @@ export class TutorialDetailsComponent implements OnInit {
 
   updatePublished(status: boolean): void {
     const data = {
-      title: this.currentTutorial.title,
+      studentName: this.currentTutorial.studentName,
       description: this.currentTutorial.description,
       published: status
     };

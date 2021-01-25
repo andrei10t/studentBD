@@ -4,34 +4,34 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "tutorials")
-public class Tutorial {
+public class StudentRequest {
   @Id
   private String id;
 
-  private String title;
+  private String studentName;
   private String description;
-  private boolean published;
+  private boolean status;
 
-  public Tutorial() {
+  public StudentRequest() {
 
   }
 
-  public Tutorial(String title, String description, boolean published) {
-    this.title = title;
+  public StudentRequest(String studentName, String description, boolean published) {
+    this.studentName= studentName;
     this.description = description;
-    this.published = published;
+    this.status = published;
   }
 
   public String getId() {
     return id;
   }
 
-  public String getTitle() {
-    return title;
+  public String getStudentName() {
+    return studentName;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setStudentName(String studentName) {
+    this.studentName = studentName;
   }
 
   public String getDescription() {
@@ -43,15 +43,15 @@ public class Tutorial {
   }
 
   public boolean isPublished() {
-    return published;
+    return status;
   }
 
   public void setPublished(boolean isPublished) {
-    this.published = isPublished;
+    this.status = isPublished;
   }
 
   @Override
   public String toString() {
-    return "Tutorial [id=" + id + ", title=" + title + ", desc=" + description + ", published=" + published + "]";
+    return "Tutorial [id=" + id + ", studentName=" + studentName + ", desc=" + description + ", published=" + status + "]";
   }
 }
