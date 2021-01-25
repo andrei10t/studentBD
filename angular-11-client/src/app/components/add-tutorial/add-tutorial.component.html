@@ -2,7 +2,7 @@
   <div class="submit-form">
     <div *ngIf="!submitted">
       <div class="form-group">
-        <label for="studentName">Titlu</label>
+        <label for="studentName">Nume</label>
         <input
           type="text"
           class="form-control"
@@ -28,8 +28,8 @@
     </div>
 
     <div *ngIf="submitted">
-      <h4>Tutorial was submitted successfully!</h4>
-      <button class="btn btn-success" (click)="newTutorial()">Add</button>
+      <h4>Cererea a fost trimsa cu succes!</h4>
+      <button class="btn btn-success" (click)="newTutorial()">Adauga</button>
     </div>
   </div>
 </div>
