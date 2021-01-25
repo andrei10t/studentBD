@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bezkoder.spring.data.mongodb.model.Tutorial;
 import com.bezkoder.spring.data.mongodb.repository.TutorialRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4201")//merge si 4200
 @RestController
 @RequestMapping("/api")
 public class TutorialController {
 
   @Autowired
-  TutorialRepository tutorialRepository;
+  TutorialRepository repository;
 
   @GetMapping("/tutorials")
   public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
@@ -35,9 +35,9 @@ public class TutorialController {
       List<Tutorial> tutorials = new ArrayList<Tutorial>();
 
       if (title == null)
-        tutorialRepository.findAll().forEach(tutorials::add);
+        repository.findAll().forEach(tutorials::add);
       else
-        tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
+        repository.findByTitleContaining(title).forEach(tutorials::add);
 
       if (tutorials.isEmpty()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -51,7 +51,7 @@ public class TutorialController {
 
   @GetMapping("/tutorials/{id}")
   public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") String id) {
-    Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+    Optional<Tutorial> tutorialData = repository.findById(id);
 
     if (tutorialData.isPresent()) {
       return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
@@ -63,7 +63,7 @@ public class TutorialController {
   @PostMapping("/tutorials")
   public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
     try {
-      Tutorial _tutorial = tutorialRepository.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false));
+      Tutorial _tutorial = repository.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), false));
       return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
     } catch (Exception e) {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,14 +72,14 @@ public class TutorialController {
 
   @PutMapping("/tutorials/{id}")
   public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") String id, @RequestBody Tutorial tutorial) {
-    Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+    Optional<Tutorial> tutorialData = repository.findById(id);
 
     if (tutorialData.isPresent()) {
       Tutorial _tutorial = tutorialData.get();
       _tutorial.setTitle(tutorial.getTitle());
       _tutorial.setDescription(tutorial.getDescription());
       _tutorial.setPublished(tutorial.isPublished());
-      return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
+      return new ResponseEntity<>(repository.save(_tutorial), HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -88,7 +88,7 @@ public class TutorialController {
   @DeleteMapping("/tutorials/{id}")
   public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") String id) {
     try {
-      tutorialRepository.deleteById(id);
+      repository.deleteById(id);
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } catch (Exception e) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -98,7 +98,7 @@ public class TutorialController {
   @DeleteMapping("/tutorials")
   public ResponseEntity<HttpStatus> deleteAllTutorials() {
     try {
-      tutorialRepository.deleteAll();
+      repository.deleteAll();
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } catch (Exception e) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -108,7 +108,7 @@ public class TutorialController {
   @GetMapping("/tutorials/published")
   public ResponseEntity<List<Tutorial>> findByPublished() {
     try {
-      List<Tutorial> tutorials = tutorialRepository.findByPublished(true);
+      List<Tutorial> tutorials = repository.findByPublished(true);
 
       if (tutorials.isEmpty()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
