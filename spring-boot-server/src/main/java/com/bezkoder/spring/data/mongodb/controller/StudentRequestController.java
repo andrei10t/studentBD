@@ -17,17 +17,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import com.bezkoder.spring.data.mongodb.model.StudentRequest;
 import com.bezkoder.spring.data.mongodb.repository.StudentRequestRepository;
 
-@CrossOrigin(origins = "http://localhost:4201")//merge si 4200
+@CrossOrigin(origins = "http://localhost:4201")
 @RestController
 @RequestMapping("/api")
 public class StudentRequestController {
 
   @Autowired
   StudentRequestRepository repository;
+
+  @Autowired
+  KafkaTemplate<String, String> kafkaTemplate;
+  private static final String TOPIC = "Kafka_Example";
+
 
   @GetMapping("/tutorials")
   public ResponseEntity<List<StudentRequest>> getAllTutorials(@RequestParam(required = false) String studentName) {
@@ -64,6 +70,8 @@ public class StudentRequestController {
   public ResponseEntity<StudentRequest> createTutorial(@RequestBody StudentRequest tutorial) {
     try {
       StudentRequest _tutorial = repository.save(new StudentRequest(tutorial.getStudentName(), tutorial.getDescription(), false));
+      kafkaTemplate.send(TOPIC, _tutorial.toString());
+
       return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
     } catch (Exception e) {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
